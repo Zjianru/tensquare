@@ -25,10 +25,12 @@ import com.tensquare.recruit.dao.RecruitDao;
 import com.tensquare.recruit.pojo.Recruit;
 
 /**
- * 服务层
- * 
- * @author Administrator
+ * Created by IntelliJ IDEA
  *
+ * @author Zjianru
+ * @version 1.0
+ * 2019/5/25
+ * com.tensquare.recruit.service
  */
 @Service
 public class RecruitService {

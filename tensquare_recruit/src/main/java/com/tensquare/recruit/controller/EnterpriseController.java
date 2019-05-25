@@ -1,5 +1,4 @@
 package com.tensquare.recruit.controller;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,12 @@ import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
 /**
- * 控制器层
- * @author Administrator
+ * Created by IntelliJ IDEA
  *
+ * @author Zjianru
+ * @version 1.0
+ * 2019/5/25
+ * com.tensquare.recruit.controller
  */
 @RestController
 @CrossOrigin
@@ -37,7 +39,7 @@ public class EnterpriseController {
 	 */
 	@RequestMapping(method= RequestMethod.GET)
 	public Result findAll(){
-		return new Result(true,StatusCode.OK,"查询成功",enterpriseService.findAll());
+		return new Result(StatusCode.OK, true,"查询成功",enterpriseService.findAll());
 	}
 	
 	/**
@@ -47,7 +49,7 @@ public class EnterpriseController {
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.GET)
 	public Result findById(@PathVariable String id){
-		return new Result(true,StatusCode.OK,"查询成功",enterpriseService.findById(id));
+		return new Result(StatusCode.OK, true,"查询成功",enterpriseService.findById(id));
 	}
 
 
@@ -61,7 +63,7 @@ public class EnterpriseController {
 	@RequestMapping(value="/search/{page}/{size}",method=RequestMethod.POST)
 	public Result findSearch(@RequestBody Map searchMap , @PathVariable int page, @PathVariable int size){
 		Page<Enterprise> pageList = enterpriseService.findSearch(searchMap, page, size);
-		return  new Result(true,StatusCode.OK,"查询成功",  new PageResult<Enterprise>(pageList.getTotalElements(), pageList.getContent()) );
+		return  new Result(StatusCode.OK, true,"查询成功",  new PageResult<Enterprise>(pageList.getTotalElements(), pageList.getContent()) );
 	}
 
 	/**
@@ -71,7 +73,7 @@ public class EnterpriseController {
      */
     @RequestMapping(value="/search",method = RequestMethod.POST)
     public Result findSearch( @RequestBody Map searchMap){
-        return new Result(true,StatusCode.OK,"查询成功",enterpriseService.findSearch(searchMap));
+        return new Result(StatusCode.OK, true,"查询成功",enterpriseService.findSearch(searchMap));
     }
 	
 	/**
@@ -81,7 +83,7 @@ public class EnterpriseController {
 	@RequestMapping(method=RequestMethod.POST)
 	public Result add(@RequestBody Enterprise enterprise  ){
 		enterpriseService.add(enterprise);
-		return new Result(true,StatusCode.OK,"增加成功");
+		return new Result(StatusCode.OK, true,"增加成功");
 	}
 	
 	/**
@@ -92,7 +94,7 @@ public class EnterpriseController {
 	public Result update(@RequestBody Enterprise enterprise, @PathVariable String id ){
 		enterprise.setId(id);
 		enterpriseService.update(enterprise);		
-		return new Result(true,StatusCode.OK,"修改成功");
+		return new Result(StatusCode.OK, true,"修改成功");
 	}
 	
 	/**
@@ -102,7 +104,7 @@ public class EnterpriseController {
 	@RequestMapping(value="/{id}",method= RequestMethod.DELETE)
 	public Result delete(@PathVariable String id ){
 		enterpriseService.deleteById(id);
-		return new Result(true,StatusCode.OK,"删除成功");
+		return new Result(StatusCode.OK, true,"删除成功");
 	}
 	
 }

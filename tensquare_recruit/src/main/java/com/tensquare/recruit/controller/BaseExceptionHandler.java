@@ -8,6 +8,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 /**
+ * Created by IntelliJ IDEA
+ *
+ * @author Zjianru
+ * @version 1.0
+ * 2019/5/25
+ * com.tensquare.recruit.controller
  * 统一异常处理类
  */
 @ControllerAdvice
@@ -17,6 +23,6 @@ public class BaseExceptionHandler {
     @ResponseBody
     public Result error(Exception e){
         e.printStackTrace();        
-        return new Result(false, StatusCode.ERROR, "执行出错");
+        return new Result( StatusCode.ERROR, false,"执行出错");
     }
 }

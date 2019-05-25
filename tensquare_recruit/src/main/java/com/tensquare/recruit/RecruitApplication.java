@@ -3,6 +3,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import util.IdWorker;
+/**
+ * Created by IntelliJ IDEA
+ *
+ * @author Zjianru
+ * @version 1.0
+ * 2019/5/25
+ * com.tensquare.recruit
+ */
 @SpringBootApplication
 public class RecruitApplication {
 
