@@ -2,9 +2,11 @@ package com.tensquare.base.controller;
 
 import com.tensquare.base.pojo.Label;
 import com.tensquare.base.service.LabelService;
+import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import util.IdWorker;
 
@@ -136,12 +138,8 @@ public class LabelController {
 	public Result pageQuery(@RequestBody Label label,
 	                        @PathVariable("page") Integer page,
 	                        @PathVariable("size") Integer size) {
-
-		List<Label> labels = labelService.pageQuery(label,page,size);
-
-
-
-		return new Result(StatusCode.OK, true, "查询成功", labels);
+		Page<Label> labels = labelService.pageQuery(label,page,size);
+		return new Result(StatusCode.OK, true, "查询成功", new PageResult<>(labels.getTotalElements(), labels.getContent()));
 	}
 
 

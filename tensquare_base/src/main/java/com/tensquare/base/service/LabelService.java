@@ -1,15 +1,15 @@
 package com.tensquare.base.service;
 
-import com.sun.deploy.xml.XMLable;
 import com.tensquare.base.dao.LabelDao;
 import com.tensquare.base.pojo.Label;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import util.IdWorker;
 
-import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -88,11 +88,34 @@ public class LabelService {
 
 	/**
 	 * 标签分页
+	 *
 	 * @param label 标签信息
 	 * @return 标签 List
 	 */
-	public List<Label> findSearch(Label label){
-		return labelDao.findAll(new Specification<Label>() {
+	public List<Label> findSearch(Label label) {
+		return labelDao.findAll(toSpecificationObject(label));
+	}
+
+	/**
+	 * 标签分页
+	 *
+	 * @param label 标签信息
+	 * @param page  分页
+	 * @param size  页内数量
+	 * @return Page<Label> 对象
+	 */
+	public Page<Label> pageQuery(Label label, Integer page, Integer size) {
+		return labelDao.findAll(toSpecificationObject(label), PageRequest.of(page - 1, size));
+	}
+
+	/**
+	 * 内部对象方法
+	 * @param label Label 对象
+	 * @return Specification<Label>对象，满足本类方法调用
+	 */
+	private Specification<Label> toSpecificationObject(Label label) {
+
+		return new Specification<Label>() {
 			/**
 			 *
 			 * @param root 根对象 也就是要把条件封装到那个对象中  where 类名 = label.getId
@@ -103,35 +126,30 @@ public class LabelService {
 			@Override
 			public Predicate toPredicate(Root<Label> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
 				List<Predicate> list = new ArrayList<>();
-				if (label.getId() != null && !"".equals(label.getId())){
-					Predicate predicate = criteriaBuilder.like(root.get("id").as(String.class),  label.getId());
+				if (label.getId() != null && !"".equals(label.getId())) {
+					Predicate predicate = criteriaBuilder.like(root.get("id").as(String.class), label.getId());
 					list.add(predicate);
 				}
-				if (label.getLabelname() != null && ! "".equals(label.getLabelname()) ){
-					Predicate predicate = criteriaBuilder.like(root.get("labelname").as(String.class),  "%"+label.getLabelname()+"%");
+				if (label.getLabelname() != null && !"".equals(label.getLabelname())) {
+					Predicate predicate = criteriaBuilder.like(root.get("labelname").as(String.class), "%" + label.getLabelname() + "%");
 					list.add(predicate);
 				}
-				if (label.getState() != null && !"".equals(label.getState())){
-					Predicate predicate = criteriaBuilder.like(root.get("state").as(String.class),  label.getState());
+				if (label.getState() != null && !"".equals(label.getState())) {
+					Predicate predicate = criteriaBuilder.like(root.get("state").as(String.class), label.getState());
 					list.add(predicate);
 				}
-				if (label.getCount() != null && !"".equals(label.getCount())){
-					Predicate predicate = criteriaBuilder.like(root.get("count").as(String.class),  label.getCount());
+				if (label.getCount() != null && !"".equals(label.getCount())) {
+					Predicate predicate = criteriaBuilder.like(root.get("count").as(String.class), label.getCount());
 					list.add(predicate);
 				}
-				if (label.getRecommend() != null && !"".equals(label.getRecommend())){
-					Predicate predicate = criteriaBuilder.like(root.get("recommend").as(String.class),  label.getRecommend());
+				if (label.getRecommend() != null && !"".equals(label.getRecommend())) {
+					Predicate predicate = criteriaBuilder.like(root.get("recommend").as(String.class), label.getRecommend());
 					list.add(predicate);
 				}
 				Predicate[] persistence = new Predicate[list.size()];
 				list.toArray(persistence);
 				return criteriaBuilder.and(persistence);
 			}
-		});
-	}
-
-	public List<Label> pageQuery(Label label, Integer page, Integer size) {
-
-		return null;
+		};
 	}
 }
