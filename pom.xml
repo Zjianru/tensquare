@@ -8,6 +8,7 @@
     <modules>
         <module>tensquare_common</module>
         <module>tensquare_base</module>
+        <module>tensquare_recruit</module>
     </modules>
     <packaging>pom</packaging>
     <parent>
