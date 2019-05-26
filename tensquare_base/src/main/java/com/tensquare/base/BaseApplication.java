@@ -16,15 +16,16 @@ import util.IdWorker;
 @SpringBootApplication
 public class BaseApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(BaseApplication.class,args);
+		SpringApplication.run(BaseApplication.class, args);
 	}
 
 	/**
 	 * 把 ID 生成器放进 spring 容器
+	 *
 	 * @return IdWorker 对象
 	 */
 	@Bean
-	public IdWorker idWorker(){
+	public IdWorker idWorker() {
 		return new IdWorker();
 	}
 

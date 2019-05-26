@@ -2,14 +2,14 @@ server:
   port: 9001
 spring:
   application:
-    name: tensquare-base
+    name: tensquare-base  #指定服务名
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+#10.87.27.77
     url: jdbc:mysql://10.87.27.77:3306/tensquare_base?serverTimezone=CTT&characterEncoding=utf-8
     username: root
     password: 123456
   jpa:
-    database: mysql
     show-sql: true
-#    generate-ddl: true
+    database: mysql
 
