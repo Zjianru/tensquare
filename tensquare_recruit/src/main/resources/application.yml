@@ -4,11 +4,10 @@ spring:
   application:  
     name: tensquare-recruit #指定服务名
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-# 10.87.27.77
     url: jdbc:mysql://10.87.27.77:3306/tensquare_recruit?serverTimezone=CTT&characterEncoding=utf-8
     username: root
     password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
     database: mysql
