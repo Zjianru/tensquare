@@ -25,10 +25,12 @@ import com.tensquare.qa.dao.ProblemDao;
 import com.tensquare.qa.pojo.Problem;
 
 /**
- * 服务层
- * 
- * @author Administrator
+ * Created by IntelliJ IDEA
  *
+ * @author Zjianru
+ * @version 1.0
+ * 2019/5/26
+ * com.tensquare.qa.service
  */
 @Service
 public class ProblemService {
@@ -41,7 +43,7 @@ public class ProblemService {
 
 	/**
 	 * 查询全部列表
-	 * @return
+	 * @return  List<Problem>
 	 */
 	public List<Problem> findAll() {
 		return problemDao.findAll();
@@ -50,10 +52,10 @@ public class ProblemService {
 	
 	/**
 	 * 条件查询+分页
-	 * @param whereMap
-	 * @param page
-	 * @param size
-	 * @return
+	 * @param whereMap 查询条件
+	 * @param page 分页
+	 * @param size 页内数量
+	 * @return Page<Problem>
 	 */
 	public Page<Problem> findSearch(Map whereMap, int page, int size) {
 		Specification<Problem> specification = createSpecification(whereMap);
@@ -64,8 +66,8 @@ public class ProblemService {
 	
 	/**
 	 * 条件查询
-	 * @param whereMap
-	 * @return
+	 * @param whereMap 条件
+	 * @return List<Problem>
 	 */
 	public List<Problem> findSearch(Map whereMap) {
 		Specification<Problem> specification = createSpecification(whereMap);
@@ -74,8 +76,8 @@ public class ProblemService {
 
 	/**
 	 * 根据ID查询实体
-	 * @param id
-	 * @return
+	 * @param id id
+	 * @return Problem 对象
 	 */
 	public Problem findById(String id) {
 		return problemDao.findById(id).get();
@@ -83,7 +85,7 @@ public class ProblemService {
 
 	/**
 	 * 增加
-	 * @param problem
+	 * @param problem Problem 对象
 	 */
 	public void add(Problem problem) {
 		problem.setId( idWorker.nextId()+"" );
@@ -92,7 +94,7 @@ public class ProblemService {
 
 	/**
 	 * 修改
-	 * @param problem
+	 * @param problem Problem 对象
 	 */
 	public void update(Problem problem) {
 		problemDao.save(problem);
@@ -100,7 +102,7 @@ public class ProblemService {
 
 	/**
 	 * 删除
-	 * @param id
+	 * @param id id
 	 */
 	public void deleteById(String id) {
 		problemDao.deleteById(id);
@@ -108,8 +110,8 @@ public class ProblemService {
 
 	/**
 	 * 动态条件构建
-	 * @param searchMap
-	 * @return
+	 * @param searchMap 条件
+	 * @return  Specification<Problem>
 	 */
 	private Specification<Problem> createSpecification(Map searchMap) {
 

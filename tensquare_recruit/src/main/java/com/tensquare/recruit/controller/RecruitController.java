@@ -23,7 +23,6 @@ import entity.StatusCode;
  * @version 1.0
  * 2019/5/25
  * com.tensquare.recruit.controller
- * 统一异常处理类
  */
 @RestController
 @CrossOrigin
@@ -36,7 +35,7 @@ public class RecruitController {
 	
 	/**
 	 * 查询全部数据
-	 * @return
+	 * @return Result(StatusCode.OK, true,"查询成功",recruitService.findAll())
 	 */
 	@RequestMapping(method= RequestMethod.GET)
 	public Result findAll(){
@@ -46,7 +45,7 @@ public class RecruitController {
 	/**
 	 * 根据ID查询
 	 * @param id ID
-	 * @return
+	 * @return Result(StatusCode.OK, true,"查询成功",recruitService.findById(id))
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.GET)
 	public Result findById(@PathVariable String id){
@@ -69,8 +68,8 @@ public class RecruitController {
 
 	/**
      * 根据条件查询
-     * @param searchMap
-     * @return
+     * @param searchMap 条件
+     * @return Result(StatusCode.OK, true,"查询成功",recruitService.findSearch(searchMap))
      */
     @RequestMapping(value="/search",method = RequestMethod.POST)
     public Result findSearch( @RequestBody Map searchMap){
@@ -79,7 +78,8 @@ public class RecruitController {
 	
 	/**
 	 * 增加
-	 * @param recruit
+	 * @param recruit 封装对象
+	 * @return Result(StatusCode.OK, true,"增加成功")
 	 */
 	@RequestMapping(method=RequestMethod.POST)
 	public Result add(@RequestBody Recruit recruit  ){
@@ -89,7 +89,9 @@ public class RecruitController {
 	
 	/**
 	 * 修改
-	 * @param recruit
+	 * @param recruit 对象
+	 * @param id id
+	 * @return Result(StatusCode.OK, true,"修改成功")
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.PUT)
 	public Result update(@RequestBody Recruit recruit, @PathVariable String id ){
@@ -100,12 +102,32 @@ public class RecruitController {
 	
 	/**
 	 * 删除
-	 * @param id
+	 * @param id id
+	 * @return  Result(StatusCode.OK, true,"删除成功")
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.DELETE)
 	public Result delete(@PathVariable String id ){
 		recruitService.deleteById(id);
 		return new Result(StatusCode.OK, true,"删除成功");
 	}
-	
+
+	/**
+	 * 查询推荐职位
+	 * @return Result(StatusCode.OK, true,"查询成功",recruitService.recommend())
+	 */
+	@RequestMapping(value="/search/recommend",method= RequestMethod.GET)
+	public Result newList(){
+		return new Result(StatusCode.OK, true,"查询成功",recruitService.recommend());
+	}
+
+	/**
+	 * 查询最新职位
+	 * @return Result(StatusCode.OK, true,"查询成功",recruitService.newList())
+	 */
+	@RequestMapping(value="/search/newlist",method= RequestMethod.GET)
+	public Result recommend(){
+		return new Result(StatusCode.OK, true,"查询成功",recruitService.newList());
+	}
+
+
 }

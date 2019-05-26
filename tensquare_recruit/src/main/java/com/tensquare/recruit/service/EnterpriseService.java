@@ -1,21 +1,17 @@
 package com.tensquare.recruit.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +39,7 @@ public class EnterpriseService {
 
 	/**
 	 * 查询全部列表
-	 * @return
+	 * @return List<Enterprise>
 	 */
 	public List<Enterprise> findAll() {
 		return enterpriseDao.findAll();
@@ -52,10 +48,10 @@ public class EnterpriseService {
 	
 	/**
 	 * 条件查询+分页
-	 * @param whereMap
-	 * @param page
-	 * @param size
-	 * @return
+	 * @param whereMap 条件
+	 * @param page 分页
+	 * @param size 页内数量
+	 * @return  Page<Enterprise>
 	 */
 	public Page<Enterprise> findSearch(Map whereMap, int page, int size) {
 		Specification<Enterprise> specification = createSpecification(whereMap);
@@ -66,8 +62,8 @@ public class EnterpriseService {
 	
 	/**
 	 * 条件查询
-	 * @param whereMap
-	 * @return
+	 * @param whereMap 条件
+	 * @return List<Enterprise>
 	 */
 	public List<Enterprise> findSearch(Map whereMap) {
 		Specification<Enterprise> specification = createSpecification(whereMap);
@@ -76,8 +72,8 @@ public class EnterpriseService {
 
 	/**
 	 * 根据ID查询实体
-	 * @param id
-	 * @return
+	 * @param id id
+	 * @return Enterprise 对象
 	 */
 	public Enterprise findById(String id) {
 		return enterpriseDao.findById(id).get();
@@ -85,7 +81,7 @@ public class EnterpriseService {
 
 	/**
 	 * 增加
-	 * @param enterprise
+	 * @param enterprise Enterprise 对啊想
 	 */
 	public void add(Enterprise enterprise) {
 		enterprise.setId( idWorker.nextId()+"" );
@@ -94,7 +90,7 @@ public class EnterpriseService {
 
 	/**
 	 * 修改
-	 * @param enterprise
+	 * @param enterprise Enterprise 对象
 	 */
 	public void update(Enterprise enterprise) {
 		enterpriseDao.save(enterprise);
@@ -102,7 +98,7 @@ public class EnterpriseService {
 
 	/**
 	 * 删除
-	 * @param id
+	 * @param id id
 	 */
 	public void deleteById(String id) {
 		enterpriseDao.deleteById(id);
@@ -110,8 +106,8 @@ public class EnterpriseService {
 
 	/**
 	 * 动态条件构建
-	 * @param searchMap
-	 * @return
+	 * @param searchMap 条件
+	 * @return Specification<Enterprise>
 	 */
 	private Specification<Enterprise> createSpecification(Map searchMap) {
 
@@ -162,6 +158,16 @@ public class EnterpriseService {
 			}
 		};
 
+	}
+
+
+	/**
+	 * 查找热门
+	 * @param ishot 条件  是否热门
+	 * @return  List<Enterprise>
+	 */
+	public List<Enterprise> hotList(String ishot){
+		return enterpriseDao.findByIshot(ishot);
 	}
 
 }

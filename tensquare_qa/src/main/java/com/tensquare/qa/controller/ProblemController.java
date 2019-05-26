@@ -18,9 +18,12 @@ import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
 /**
- * 控制器层
- * @author Administrator
+ * Created by IntelliJ IDEA
  *
+ * @author Zjianru
+ * @version 1.0
+ * 2019/5/26
+ * com.tensquare.qa.controller
  */
 @RestController
 @CrossOrigin
@@ -33,21 +36,21 @@ public class ProblemController {
 	
 	/**
 	 * 查询全部数据
-	 * @return
+	 * @return  Result(StatusCode.OK, true,"查询成功",problemService.findAll())
 	 */
 	@RequestMapping(method= RequestMethod.GET)
 	public Result findAll(){
-		return new Result(true,StatusCode.OK,"查询成功",problemService.findAll());
+		return new Result(StatusCode.OK, true,"查询成功",problemService.findAll());
 	}
 	
 	/**
 	 * 根据ID查询
 	 * @param id ID
-	 * @return
+	 * @return Result(StatusCode.OK, true,"查询成功",problemService.findById(id))
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.GET)
 	public Result findById(@PathVariable String id){
-		return new Result(true,StatusCode.OK,"查询成功",problemService.findById(id));
+		return new Result(StatusCode.OK, true,"查询成功",problemService.findById(id));
 	}
 
 
@@ -61,48 +64,52 @@ public class ProblemController {
 	@RequestMapping(value="/search/{page}/{size}",method=RequestMethod.POST)
 	public Result findSearch(@RequestBody Map searchMap , @PathVariable int page, @PathVariable int size){
 		Page<Problem> pageList = problemService.findSearch(searchMap, page, size);
-		return  new Result(true,StatusCode.OK,"查询成功",  new PageResult<Problem>(pageList.getTotalElements(), pageList.getContent()) );
+		return  new Result(StatusCode.OK, true,"查询成功",  new PageResult<Problem>(pageList.getTotalElements(), pageList.getContent()) );
 	}
 
 	/**
      * 根据条件查询
-     * @param searchMap
-     * @return
+     * @param searchMap 参数 map
+     * @return Result(StatusCode.OK, true,"查询成功",problemService.findSearch(searchMap))
      */
     @RequestMapping(value="/search",method = RequestMethod.POST)
     public Result findSearch( @RequestBody Map searchMap){
-        return new Result(true,StatusCode.OK,"查询成功",problemService.findSearch(searchMap));
+        return new Result(StatusCode.OK, true,"查询成功",problemService.findSearch(searchMap));
     }
 	
 	/**
 	 * 增加
-	 * @param problem
+	 * @param problem 封装对象
+	 * @return Result(StatusCode.OK, true,"增加成功")
 	 */
 	@RequestMapping(method=RequestMethod.POST)
 	public Result add(@RequestBody Problem problem  ){
 		problemService.add(problem);
-		return new Result(true,StatusCode.OK,"增加成功");
+		return new Result(StatusCode.OK, true,"增加成功");
 	}
 	
 	/**
 	 * 修改
-	 * @param problem
+	 * @param problem 封装对象
+	 * @param id id
+	 * @return Result(StatusCode.OK, true,"修改成功")
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.PUT)
 	public Result update(@RequestBody Problem problem, @PathVariable String id ){
 		problem.setId(id);
 		problemService.update(problem);		
-		return new Result(true,StatusCode.OK,"修改成功");
+		return new Result(StatusCode.OK, true,"修改成功");
 	}
 	
 	/**
 	 * 删除
-	 * @param id
+	 * @param id id
+	 * @return  Result(StatusCode.OK, true,"删除成功")
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.DELETE)
 	public Result delete(@PathVariable String id ){
 		problemService.deleteById(id);
-		return new Result(true,StatusCode.OK,"删除成功");
+		return new Result(StatusCode.OK, true,"删除成功");
 	}
 	
 }

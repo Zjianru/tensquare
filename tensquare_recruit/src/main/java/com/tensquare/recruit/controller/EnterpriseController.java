@@ -31,11 +31,10 @@ public class EnterpriseController {
 
 	@Autowired
 	private EnterpriseService enterpriseService;
-	
-	
+
 	/**
 	 * 查询全部数据
-	 * @return
+	 * @return Result(StatusCode.OK, true,"查询成功",enterpriseService.findAll())
 	 */
 	@RequestMapping(method= RequestMethod.GET)
 	public Result findAll(){
@@ -45,7 +44,7 @@ public class EnterpriseController {
 	/**
 	 * 根据ID查询
 	 * @param id ID
-	 * @return
+	 * @return Result(StatusCode.OK, true,"查询成功",enterpriseService.findById(id))
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.GET)
 	public Result findById(@PathVariable String id){
@@ -68,8 +67,8 @@ public class EnterpriseController {
 
 	/**
      * 根据条件查询
-     * @param searchMap
-     * @return
+     * @param searchMap 条件 mao
+     * @return Result(StatusCode.OK, true,"查询成功",enterpriseService.findSearch(searchMap))
      */
     @RequestMapping(value="/search",method = RequestMethod.POST)
     public Result findSearch( @RequestBody Map searchMap){
@@ -78,7 +77,7 @@ public class EnterpriseController {
 	
 	/**
 	 * 增加
-	 * @param enterprise
+	 * @param enterprise Enterprise 对象
 	 */
 	@RequestMapping(method=RequestMethod.POST)
 	public Result add(@RequestBody Enterprise enterprise  ){
@@ -88,7 +87,7 @@ public class EnterpriseController {
 	
 	/**
 	 * 修改
-	 * @param enterprise
+	 * @param enterprise Enterprise 对象
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.PUT)
 	public Result update(@RequestBody Enterprise enterprise, @PathVariable String id ){
@@ -99,12 +98,21 @@ public class EnterpriseController {
 	
 	/**
 	 * 删除
-	 * @param id
+	 * @param id 参数 --> id
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.DELETE)
 	public Result delete(@PathVariable String id ){
 		enterpriseService.deleteById(id);
 		return new Result(StatusCode.OK, true,"删除成功");
 	}
-	
+
+	/**
+	 * 查询热门列表
+	 * @return Result(StatusCode.OK,true,"查询成功",enterpriseService.hotList(ishot))
+	 */
+	@RequestMapping(value="/search/hotlist",method= RequestMethod.GET)
+	public Result hotList(){
+		String ishot = "1";
+		return new Result(StatusCode.OK,true,"查询成功",enterpriseService.hotList(ishot));
+	}
 }

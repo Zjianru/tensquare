@@ -14,7 +14,6 @@ import java.io.IOException;
  * @version 1.0
  * 2019/5/25
  * com.tensquare.recruit.controller
- * 统一异常处理类
  */
 @ControllerAdvice
 public class BaseExceptionHandler {

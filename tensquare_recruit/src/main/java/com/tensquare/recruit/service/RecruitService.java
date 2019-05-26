@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.RecursiveAction;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -179,5 +180,23 @@ public class RecruitService {
 		};
 
 	}
+
+	/**
+	 * 查找推荐职位
+	 * @return List<Recruit>
+	 */
+	public List<Recruit> recommend(){
+		String state = "2";
+		return recruitDao.findAllByStateOrderByCreatetime(state);
+	}
+
+	/**
+	 * 查找最新职位
+	 * @return List<Recruit>
+	 */
+	public List<Recruit> newList(){
+		String state = "0";
+		return recruitDao.findByStateNotOrderByCreatetimeDesc(state);
+}
 
 }
