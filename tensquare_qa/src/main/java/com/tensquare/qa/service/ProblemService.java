@@ -15,6 +15,7 @@ import javax.persistence.criteria.Selection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -37,35 +38,38 @@ public class ProblemService {
 
 	@Autowired
 	private ProblemDao problemDao;
-	
+
 	@Autowired
 	private IdWorker idWorker;
 
 	/**
 	 * 查询全部列表
-	 * @return  List<Problem>
+	 *
+	 * @return List<Problem>
 	 */
 	public List<Problem> findAll() {
 		return problemDao.findAll();
 	}
 
-	
+
 	/**
 	 * 条件查询+分页
+	 *
 	 * @param whereMap 查询条件
-	 * @param page 分页
-	 * @param size 页内数量
+	 * @param page     分页
+	 * @param size     页内数量
 	 * @return Page<Problem>
 	 */
 	public Page<Problem> findSearch(Map whereMap, int page, int size) {
 		Specification<Problem> specification = createSpecification(whereMap);
-		PageRequest pageRequest =  PageRequest.of(page-1, size);
+		PageRequest pageRequest = PageRequest.of(page - 1, size);
 		return problemDao.findAll(specification, pageRequest);
 	}
 
-	
+
 	/**
 	 * 条件查询
+	 *
 	 * @param whereMap 条件
 	 * @return List<Problem>
 	 */
@@ -76,6 +80,7 @@ public class ProblemService {
 
 	/**
 	 * 根据ID查询实体
+	 *
 	 * @param id id
 	 * @return Problem 对象
 	 */
@@ -85,15 +90,17 @@ public class ProblemService {
 
 	/**
 	 * 增加
+	 *
 	 * @param problem Problem 对象
 	 */
 	public void add(Problem problem) {
-		problem.setId( idWorker.nextId()+"" );
+		problem.setId(idWorker.nextId() + "");
 		problemDao.save(problem);
 	}
 
 	/**
 	 * 修改
+	 *
 	 * @param problem Problem 对象
 	 */
 	public void update(Problem problem) {
@@ -102,6 +109,7 @@ public class ProblemService {
 
 	/**
 	 * 删除
+	 *
 	 * @param id id
 	 */
 	public void deleteById(String id) {
@@ -110,8 +118,9 @@ public class ProblemService {
 
 	/**
 	 * 动态条件构建
+	 *
 	 * @param searchMap 条件
-	 * @return  Specification<Problem>
+	 * @return Specification<Problem>
 	 */
 	private Specification<Problem> createSpecification(Map searchMap) {
 
@@ -120,40 +129,76 @@ public class ProblemService {
 			@Override
 			public Predicate toPredicate(Root<Problem> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> predicateList = new ArrayList<Predicate>();
-                // ID
-                if (searchMap.get("id")!=null && !"".equals(searchMap.get("id"))) {
-                	predicateList.add(cb.like(root.get("id").as(String.class), "%"+(String)searchMap.get("id")+"%"));
-                }
-                // 标题
-                if (searchMap.get("title")!=null && !"".equals(searchMap.get("title"))) {
-                	predicateList.add(cb.like(root.get("title").as(String.class), "%"+(String)searchMap.get("title")+"%"));
-                }
-                // 内容
-                if (searchMap.get("content")!=null && !"".equals(searchMap.get("content"))) {
-                	predicateList.add(cb.like(root.get("content").as(String.class), "%"+(String)searchMap.get("content")+"%"));
-                }
-                // 用户ID
-                if (searchMap.get("userid")!=null && !"".equals(searchMap.get("userid"))) {
-                	predicateList.add(cb.like(root.get("userid").as(String.class), "%"+(String)searchMap.get("userid")+"%"));
-                }
-                // 昵称
-                if (searchMap.get("nickname")!=null && !"".equals(searchMap.get("nickname"))) {
-                	predicateList.add(cb.like(root.get("nickname").as(String.class), "%"+(String)searchMap.get("nickname")+"%"));
-                }
-                // 是否解决
-                if (searchMap.get("solve")!=null && !"".equals(searchMap.get("solve"))) {
-                	predicateList.add(cb.like(root.get("solve").as(String.class), "%"+(String)searchMap.get("solve")+"%"));
-                }
-                // 回复人昵称
-                if (searchMap.get("replyname")!=null && !"".equals(searchMap.get("replyname"))) {
-                	predicateList.add(cb.like(root.get("replyname").as(String.class), "%"+(String)searchMap.get("replyname")+"%"));
-                }
-				
-				return cb.and( predicateList.toArray(new Predicate[predicateList.size()]));
+				// ID
+				if (searchMap.get("id") != null && !"".equals(searchMap.get("id"))) {
+					predicateList.add(cb.like(root.get("id").as(String.class), "%" + (String) searchMap.get("id") + "%"));
+				}
+				// 标题
+				if (searchMap.get("title") != null && !"".equals(searchMap.get("title"))) {
+					predicateList.add(cb.like(root.get("title").as(String.class), "%" + (String) searchMap.get("title") + "%"));
+				}
+				// 内容
+				if (searchMap.get("content") != null && !"".equals(searchMap.get("content"))) {
+					predicateList.add(cb.like(root.get("content").as(String.class), "%" + (String) searchMap.get("content") + "%"));
+				}
+				// 用户ID
+				if (searchMap.get("userid") != null && !"".equals(searchMap.get("userid"))) {
+					predicateList.add(cb.like(root.get("userid").as(String.class), "%" + (String) searchMap.get("userid") + "%"));
+				}
+				// 昵称
+				if (searchMap.get("nickname") != null && !"".equals(searchMap.get("nickname"))) {
+					predicateList.add(cb.like(root.get("nickname").as(String.class), "%" + (String) searchMap.get("nickname") + "%"));
+				}
+				// 是否解决
+				if (searchMap.get("solve") != null && !"".equals(searchMap.get("solve"))) {
+					predicateList.add(cb.like(root.get("solve").as(String.class), "%" + (String) searchMap.get("solve") + "%"));
+				}
+				// 回复人昵称
+				if (searchMap.get("replyname") != null && !"".equals(searchMap.get("replyname"))) {
+					predicateList.add(cb.like(root.get("replyname").as(String.class), "%" + (String) searchMap.get("replyname") + "%"));
+				}
+
+				return cb.and(predicateList.toArray(new Predicate[predicateList.size()]));
 
 			}
 		};
 
 	}
+
+
+	/**
+	 * 最新回答
+	 *
+	 * @param labelid 标签 id
+	 * @param page    分页
+	 * @param rows    页内行数
+	 * @return Page<Problem>
+	 */
+	public Page<Problem> newList(String labelid, int page, int rows) {
+		return problemDao.newList(labelid, PageRequest.of(page - 1, rows));
+	}
+
+	/**
+	 * 最热回答
+	 *
+	 * @param page 分页
+	 * @param rows 页内行数
+	 * @return Page<Problem>
+	 */
+	public Page<Problem> hotList(String labelid, int page, int rows) {
+		return problemDao.hotList(labelid, PageRequest.of(page - 1, rows));
+	}
+
+	/**
+	 * 等待回答 —— 零回答惨案
+	 *
+	 * @param page 分页
+	 * @param rows 页内行数
+	 * @return Page<Problem>
+	 */
+	public Page<Problem> waitList(String labelid, int page, int rows) {
+		return problemDao.waitList(labelid, PageRequest.of(page - 1, rows));
+	}
+
 
 }
