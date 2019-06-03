@@ -37,7 +37,7 @@ public class GatheringController {
 	 */
 	@RequestMapping(method= RequestMethod.GET)
 	public Result findAll(){
-		return new Result(true,StatusCode.OK,"查询成功",gatheringService.findAll());
+		return new Result(StatusCode.OK, true,"查询成功",gatheringService.findAll());
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public class GatheringController {
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.GET)
 	public Result findById(@PathVariable String id){
-		return new Result(true,StatusCode.OK,"查询成功",gatheringService.findById(id));
+		return new Result(StatusCode.OK, true,"查询成功",gatheringService.findById(id));
 	}
 
 
@@ -61,7 +61,7 @@ public class GatheringController {
 	@RequestMapping(value="/search/{page}/{size}",method=RequestMethod.POST)
 	public Result findSearch(@RequestBody Map searchMap , @PathVariable int page, @PathVariable int size){
 		Page<Gathering> pageList = gatheringService.findSearch(searchMap, page, size);
-		return  new Result(true,StatusCode.OK,"查询成功",  new PageResult<Gathering>(pageList.getTotalElements(), pageList.getContent()) );
+		return  new Result(StatusCode.OK, true,"查询成功",  new PageResult<Gathering>(pageList.getTotalElements(), pageList.getContent()) );
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class GatheringController {
      */
     @RequestMapping(value="/search",method = RequestMethod.POST)
     public Result findSearch( @RequestBody Map searchMap){
-        return new Result(true,StatusCode.OK,"查询成功",gatheringService.findSearch(searchMap));
+        return new Result(StatusCode.OK, true,"查询成功",gatheringService.findSearch(searchMap));
     }
 	
 	/**
@@ -81,7 +81,7 @@ public class GatheringController {
 	@RequestMapping(method=RequestMethod.POST)
 	public Result add(@RequestBody Gathering gathering  ){
 		gatheringService.add(gathering);
-		return new Result(true,StatusCode.OK,"增加成功");
+		return new Result(StatusCode.OK, true,"增加成功");
 	}
 	
 	/**
@@ -92,7 +92,7 @@ public class GatheringController {
 	public Result update(@RequestBody Gathering gathering, @PathVariable String id ){
 		gathering.setId(id);
 		gatheringService.update(gathering);		
-		return new Result(true,StatusCode.OK,"修改成功");
+		return new Result(StatusCode.OK, true,"修改成功");
 	}
 	
 	/**
@@ -102,7 +102,7 @@ public class GatheringController {
 	@RequestMapping(value="/{id}",method= RequestMethod.DELETE)
 	public Result delete(@PathVariable String id ){
 		gatheringService.deleteById(id);
-		return new Result(true,StatusCode.OK,"删除成功");
+		return new Result(StatusCode.OK, true,"删除成功");
 	}
 	
 }
