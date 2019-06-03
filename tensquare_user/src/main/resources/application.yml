@@ -1,13 +1,21 @@
 server: 
-  port: 9001
+  port: 9008
 spring: 
   application:  
     name: tensquare-user #指定服务名
-  datasource:  
-    driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://10.87.27.77:3306/tensquare_user?useUnicode=true&amp;characterEncoding=UTF8
+  datasource:
+    url: jdbc:mysql://10.87.27.77:3306/tensquare_user?serverTimezone=CTT&characterEncoding=utf-8
     username: root
     password: 123456
-  jpa: 
-    database: MySQL
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
     show-sql: true
+    database: mysql
+  redis:
+    host: 10.87.27.77
+  rabbitmq:
+    host: 10.87.27.77
+jwt:
+  config:
+    key: tensquare_$$##123321123123##$$
+    ttl: 3600000

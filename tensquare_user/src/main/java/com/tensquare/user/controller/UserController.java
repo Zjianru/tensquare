@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,15 +30,16 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
-	
+	@Autowired
+	private RedisTemplate redisTemplate;
+
 	/**
 	 * 查询全部数据
 	 * @return
 	 */
 	@RequestMapping(method= RequestMethod.GET)
 	public Result findAll(){
-		return new Result(true,StatusCode.OK,"查询成功",userService.findAll());
+		return new Result(StatusCode.OK, true,"查询成功",userService.findAll());
 	}
 	
 	/**
@@ -47,7 +49,7 @@ public class UserController {
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.GET)
 	public Result findById(@PathVariable String id){
-		return new Result(true,StatusCode.OK,"查询成功",userService.findById(id));
+		return new Result(StatusCode.OK, true,"查询成功",userService.findById(id));
 	}
 
 
@@ -61,7 +63,7 @@ public class UserController {
 	@RequestMapping(value="/search/{page}/{size}",method=RequestMethod.POST)
 	public Result findSearch(@RequestBody Map searchMap , @PathVariable int page, @PathVariable int size){
 		Page<User> pageList = userService.findSearch(searchMap, page, size);
-		return  new Result(true,StatusCode.OK,"查询成功",  new PageResult<User>(pageList.getTotalElements(), pageList.getContent()) );
+		return  new Result(StatusCode.OK, true,"查询成功",  new PageResult<User>(pageList.getTotalElements(), pageList.getContent()) );
 	}
 
 	/**
@@ -71,7 +73,7 @@ public class UserController {
      */
     @RequestMapping(value="/search",method = RequestMethod.POST)
     public Result findSearch( @RequestBody Map searchMap){
-        return new Result(true,StatusCode.OK,"查询成功",userService.findSearch(searchMap));
+        return new Result(StatusCode.OK, true,"查询成功",userService.findSearch(searchMap));
     }
 	
 	/**
@@ -81,7 +83,7 @@ public class UserController {
 	@RequestMapping(method=RequestMethod.POST)
 	public Result add(@RequestBody User user  ){
 		userService.add(user);
-		return new Result(true,StatusCode.OK,"增加成功");
+		return new Result(StatusCode.OK, true,"增加成功");
 	}
 	
 	/**
@@ -92,7 +94,7 @@ public class UserController {
 	public Result update(@RequestBody User user, @PathVariable String id ){
 		user.setId(id);
 		userService.update(user);		
-		return new Result(true,StatusCode.OK,"修改成功");
+		return new Result(StatusCode.OK, true,"修改成功");
 	}
 	
 	/**
@@ -102,7 +104,57 @@ public class UserController {
 	@RequestMapping(value="/{id}",method= RequestMethod.DELETE)
 	public Result delete(@PathVariable String id ){
 		userService.deleteById(id);
-		return new Result(true,StatusCode.OK,"删除成功");
+		return new Result(StatusCode.OK, true,"删除成功");
 	}
-	
+
+
+	/**
+	 * 发送验证码
+	 * @param mobile 手机号
+	 * @return Result
+	 */
+	@RequestMapping(value="/sendsms/{mobile}",method= RequestMethod.POST)
+	public Result sendSMS(@PathVariable String mobile ){
+		userService.sendSms(mobile);
+		return new Result(StatusCode.OK, true,"验证码发送成功");
+	}
+
+
+	/**
+	 * 用户注册
+	 * @param code 验证码
+	 * @param user user info
+	 * @return Result
+	 */
+	@RequestMapping(value="/register/{code}",method= RequestMethod.POST)
+	public Result register(@PathVariable String code,
+	                       @RequestBody User user){
+		String checkcodeRedis = (String) redisTemplate.opsForValue().get("_checkcode"+user.getMobile());
+		System.out.println("checkcodeRedis =-=-=-=-=-=-=-=-= "+checkcodeRedis);
+		if (checkcodeRedis != null && checkcodeRedis.isEmpty()){
+			return new Result(StatusCode.ERROR,false,"请先获取验证码!");
+		}
+		if (!code.equals(checkcodeRedis)){
+			return new Result(StatusCode.ERROR,false,"验证码错误!");
+		}
+		userService.add(user);
+		return new Result(StatusCode.OK, true,"注册成功");
+	}
+
+	/**
+	 * 登录
+	 * @param user user info
+	 * @return Result
+	 */
+	@RequestMapping(value = "/login",method= RequestMethod.POST)
+	public Result login(@RequestBody User user ){
+		if (userService.login(user) == null){
+			return new Result(StatusCode.LOGINERROR,false,"登陆失败");
+		}
+		//todo 调整用户信息，写入session —— JWT
+		return new Result(StatusCode.OK, true,"登陆成功");
+	}
+
+
+
 }
