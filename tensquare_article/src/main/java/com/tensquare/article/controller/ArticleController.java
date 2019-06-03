@@ -1,5 +1,4 @@
 package com.tensquare.article.controller;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ public class ArticleController {
 	
 	/**
 	 * 查询全部数据
-	 * @return
+	 * @return  Result(StatusCode.OK, true,"查询成功",articleService.findAll())
 	 */
 	@RequestMapping(method= RequestMethod.GET)
 	public Result findAll(){
@@ -46,7 +45,7 @@ public class ArticleController {
 	/**
 	 * 根据ID查询
 	 * @param id ID
-	 * @return
+	 * @return Result(StatusCode.OK, true,"查询成功",articleService.findById(id))
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.GET)
 	public Result findById(@PathVariable String id){
@@ -69,8 +68,8 @@ public class ArticleController {
 
 	/**
      * 根据条件查询
-     * @param searchMap
-     * @return
+     * @param searchMap 条件
+     * @return Result(StatusCode.OK, true,"查询成功",articleService.findSearch(searchMap))
      */
     @RequestMapping(value="/search",method = RequestMethod.POST)
     public Result findSearch( @RequestBody Map searchMap){
@@ -79,7 +78,8 @@ public class ArticleController {
 	
 	/**
 	 * 增加
-	 * @param article
+	 * @param article Article
+	 * @return  Result(StatusCode.OK, true,"增加成功")
 	 */
 	@RequestMapping(method=RequestMethod.POST)
 	public Result add(@RequestBody Article article  ){
@@ -89,23 +89,48 @@ public class ArticleController {
 	
 	/**
 	 * 修改
-	 * @param article
+	 * @param article Article
+	 * @param id id
+	 * @return Result(StatusCode.OK, true,"修改成功")
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.PUT)
 	public Result update(@RequestBody Article article, @PathVariable String id ){
 		article.setId(id);
-		articleService.update(article);		
+		articleService.update(article);
+
 		return new Result(StatusCode.OK, true,"修改成功");
 	}
 	
 	/**
 	 * 删除
-	 * @param id
+	 * @param id id
 	 */
 	@RequestMapping(value="/{id}",method= RequestMethod.DELETE)
 	public Result delete(@PathVariable String id ){
 		articleService.deleteById(id);
 		return new Result(StatusCode.OK, true,"删除成功");
 	}
-	
+
+	/**
+	 * 修改审核状态为  已审核
+	 * @param articleId id
+	 * @return Result(StatusCode.OK, true,"审核成功")
+	 */
+	@RequestMapping(value="examine/{articleId}",method= RequestMethod.PUT)
+	public Result updateState(@PathVariable String articleId ){
+		articleService.updateState(articleId);
+		return new Result(StatusCode.OK, true,"审核成功");
+	}
+	/**
+	 * 点赞
+	 * @param articleId id
+	 * @return Result(StatusCode.OK, true,"点赞成功")
+	 */
+	@RequestMapping(value="/thumbup/{articleId}",method= RequestMethod.PUT)
+	public Result addThumbup(@PathVariable String articleId ){
+		articleService.addThumbup(articleId);
+		return new Result(StatusCode.OK, true,"点赞成功");
+	}
+
+
 }

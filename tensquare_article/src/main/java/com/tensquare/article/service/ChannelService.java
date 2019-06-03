@@ -25,10 +25,12 @@ import com.tensquare.article.dao.ChannelDao;
 import com.tensquare.article.pojo.Channel;
 
 /**
- * 服务层
- * 
- * @author Administrator
+ * Created by IntelliJ IDEA
  *
+ * @author Zjianru
+ * @version 1.0
+ * 2019/5/27
+ * com.tensquare.article.service
  */
 @Service
 public class ChannelService {
@@ -41,19 +43,20 @@ public class ChannelService {
 
 	/**
 	 * 查询全部列表
-	 * @return
+	 * @return List<Channel>
 	 */
 	public List<Channel> findAll() {
 		return channelDao.findAll();
 	}
 
-	
+
 	/**
 	 * 条件查询+分页
-	 * @param whereMap
-	 * @param page
-	 * @param size
-	 * @return
+	 *
+	 * @param whereMap 条件 map
+	 * @param page     分页
+	 * @param size     页内容量
+	 * @return Page<Channel>
 	 */
 	public Page<Channel> findSearch(Map whereMap, int page, int size) {
 		Specification<Channel> specification = createSpecification(whereMap);
@@ -64,8 +67,8 @@ public class ChannelService {
 	
 	/**
 	 * 条件查询
-	 * @param whereMap
-	 * @return
+	 * @param whereMap 条件 map
+	 * @return List<Channel>
 	 */
 	public List<Channel> findSearch(Map whereMap) {
 		Specification<Channel> specification = createSpecification(whereMap);
@@ -74,8 +77,8 @@ public class ChannelService {
 
 	/**
 	 * 根据ID查询实体
-	 * @param id
-	 * @return
+	 * @param id id
+	 * @return Channel
 	 */
 	public Channel findById(String id) {
 		return channelDao.findById(id).get();
@@ -83,7 +86,7 @@ public class ChannelService {
 
 	/**
 	 * 增加
-	 * @param channel
+	 * @param channel Channel
 	 */
 	public void add(Channel channel) {
 		channel.setId( idWorker.nextId()+"" );
@@ -92,7 +95,7 @@ public class ChannelService {
 
 	/**
 	 * 修改
-	 * @param channel
+	 * @param channel Channel
 	 */
 	public void update(Channel channel) {
 		channelDao.save(channel);
@@ -100,7 +103,7 @@ public class ChannelService {
 
 	/**
 	 * 删除
-	 * @param id
+	 * @param id id
 	 */
 	public void deleteById(String id) {
 		channelDao.deleteById(id);
@@ -108,8 +111,8 @@ public class ChannelService {
 
 	/**
 	 * 动态条件构建
-	 * @param searchMap
-	 * @return
+	 * @param searchMap 条件 map
+	 * @return Specification<Channel>
 	 */
 	private Specification<Channel> createSpecification(Map searchMap) {
 

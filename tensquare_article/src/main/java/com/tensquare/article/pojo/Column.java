@@ -5,25 +5,47 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 /**
- * 实体类
- * @author Administrator
+ * Created by IntelliJ IDEA
  *
+ * @author Zjianru
+ * @version 1.0
+ * 2019/5/27
+ * com.tensquare.article.pojo
  */
 @Entity
 @Table(name="tb_column")
 public class Column implements Serializable{
-
+	/**
+	 * ID
+	 */
 	@Id
-	private String id;//ID
+	private String id;
 
 
-	
-	private String name;//专栏名称
-	private String summary;//专栏简介
-	private String userid;//用户ID
-	private java.util.Date createtime;//申请日期
-	private java.util.Date checktime;//审核日期
-	private String state;//状态
+	/**
+	 * 专栏名称
+	 */
+	private String name;
+	/**
+	 * 专栏简介
+	 */
+	private String summary;
+	/**
+	 * 用户ID
+	 */
+	private String userid;
+	/**
+	 *  申请日期
+	 */
+	private java.util.Date createtime;
+	/**
+	 * 审核日期
+	 */
+	private java.util.Date checktime;
+	/**
+	 * 状态
+	 */
+	private String state;
 
 	
 	public String getId() {		

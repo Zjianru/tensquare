@@ -25,10 +25,12 @@ import com.tensquare.article.dao.ColumnDao;
 import com.tensquare.article.pojo.Column;
 
 /**
- * 服务层
- * 
- * @author Administrator
+ * Created by IntelliJ IDEA
  *
+ * @author Zjianru
+ * @version 1.0
+ * 2019/5/27
+ * com.tensquare.article.service
  */
 @Service
 public class ColumnService {
