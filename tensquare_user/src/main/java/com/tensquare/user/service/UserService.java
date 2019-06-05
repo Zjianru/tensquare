@@ -5,38 +5,41 @@ import java.util.concurrent.TimeUnit;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
+import javax.servlet.http.HttpServletRequest;
 
+import entity.TokenCode;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import util.IdWorker;
 
 import com.tensquare.user.dao.UserDao;
 import com.tensquare.user.pojo.User;
+import util.JwtUtil;
 
 /**
  * 服务层
  *
  * @author Administrator
  */
+@Transactional
 @Service
 public class UserService {
 
 	@Autowired
 	private UserDao userDao;
-
+	@Autowired
+	private JwtUtil jwtUtil;
 	@Autowired
 	private IdWorker idWorker;
 	@Autowired
@@ -45,6 +48,8 @@ public class UserService {
 	private RabbitTemplate rabbitTemplate;
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	@Autowired
+	private HttpServletRequest httpServletRequest;
 	/**
 	 * 查询全部列表
 	 *
@@ -123,14 +128,18 @@ public class UserService {
 	 * @param id
 	 */
 	public void deleteById(String id) {
+		String token = (String) httpServletRequest.getAttribute(TokenCode.CLAIMS_ROLE_ADMIN);
+		if (token == null || "".equals(token)){
+			throw new RuntimeException("权限不足");
+		}
 		userDao.deleteById(id);
 	}
 
 	/**
 	 * 动态条件构建
 	 *
-	 * @param searchMap
-	 * @return
+	 * @param searchMap searchMap
+	 * @return Specification<User>
 	 */
 	private Specification<User> createSpecification(Map searchMap) {
 
@@ -208,5 +217,16 @@ public class UserService {
 			return result;
 		}
 		return null;
+	}
+
+	/**
+	 * 更新粉丝数和关注数
+	 * @param x 主梁
+	 * @param userid userid
+	 * @param friendid friendid
+	 */
+	public void updateFanscountAndFollowcount(int x, String userid, String friendid) {
+		userDao.updatefanscount(x,friendid);
+		userDao.updatefollowcount(x,userid);
 	}
 }

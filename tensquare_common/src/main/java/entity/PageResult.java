@@ -8,7 +8,7 @@ import java.util.List;
  * @author Zjianru
  * @version 1.0
  * 2019/5/21
- * entity - 统一返回对象 - 分页
+ * common - 统一返回对象 - 分页
  */
 public class PageResult <T> {
 	/**

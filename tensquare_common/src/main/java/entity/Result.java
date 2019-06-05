@@ -6,7 +6,7 @@ package entity;
  * @author Zjianru
  * @version 1.0
  * 2019/5/21
- * entity - 统一返回对象
+ * common - 统一返回对象
  */
 public class Result {
 

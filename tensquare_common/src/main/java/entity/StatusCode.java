@@ -6,7 +6,7 @@ package entity;
  * @author Zjianru
  * @version 1.0
  * 2019/5/21
- * entity - 状态码
+ * common - 状态码
  */
 public class   StatusCode {
 	/**
