@@ -32,4 +32,3 @@ target/
 .DS_Store
 Thumbs.db
 src/test/
-tensquare_sms/src/main/resources/application.yml

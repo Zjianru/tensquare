@@ -1,4 +1,4 @@
-package com.tensquare.user.interceptor;
+package com.tensquare.friend.interceptor;
 
 import entity.TokenCode;
 import io.jsonwebtoken.Claims;
@@ -41,9 +41,6 @@ public class JwtInterceptor implements HandlerInterceptor {
 				try {
 					Claims claims = jwtUtil.parseJWT(token);
 					String roles = (String) claims.get(TokenCode.ROLES);
-					if (roles != null && !TokenCode.ROLE_ADMIN.equals(roles)) {
-						request.setAttribute(TokenCode.CLAIMS_ROLE_ADMIN, token);
-					}
 					if (roles != null && !TokenCode.ROLE_USER.equals(roles)) {
 						request.setAttribute(TokenCode.CLAIMS_ROLE_USER, token);
 					}

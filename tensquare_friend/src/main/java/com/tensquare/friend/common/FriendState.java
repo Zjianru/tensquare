@@ -1,4 +1,4 @@
-package com.tensquare.friend.entity;
+package com.tensquare.friend.common;
 
 /**
  * Created by IntelliJ IDEA
@@ -6,7 +6,7 @@ package com.tensquare.friend.entity;
  * @author Zjianru
  * @version 1.0
  * 2019/6/5
- * com.tensquare.friend.entity
+ * com.tensquare.friend.common
  */
 public class FriendState {
 	public static final String LIKE_YOU = "1";

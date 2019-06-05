@@ -3,6 +3,9 @@ package com.tensquare.qa.controller;
 import java.util.List;
 import java.util.Map;
 
+import com.netflix.discovery.converters.Auto;
+import com.tensquare.qa.client.BaseEurekaClient;
+import entity.TokenCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,6 +22,8 @@ import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by IntelliJ IDEA
  *
@@ -34,7 +39,10 @@ public class ProblemController {
 
 	@Autowired
 	private ProblemService problemService;
-
+	@Autowired
+	private HttpServletRequest httpServletRequest;
+	@Autowired
+	private BaseEurekaClient baseEurekaClient;
 
 	/**
 	 * 查询全部数据
@@ -92,6 +100,11 @@ public class ProblemController {
 	@RequestMapping(method = RequestMethod.POST)
 	public Result add(@RequestBody Problem problem) {
 		problemService.add(problem);
+		String token = (String) httpServletRequest.getAttribute(TokenCode.CLAIMS_ROLE_USER);
+		if (token == null || "".equals(token)) {
+			return new Result(StatusCode.ACCESSERROR, false, "权限不足");
+		}
+
 		return new Result(StatusCode.OK, true, "增加成功");
 	}
 
@@ -123,8 +136,8 @@ public class ProblemController {
 
 	/**
 	 * @param label 标签 id
-	 * @param page 页码
-	 * @param size 页容量
+	 * @param page  页码
+	 * @param size  页容量
 	 * @return Result
 	 */
 	@RequestMapping(value = "/newlist/{label}/{page}/{size}", method = RequestMethod.GET)
@@ -136,8 +149,8 @@ public class ProblemController {
 
 	/**
 	 * @param label 标签 id
-	 * @param page 页码
-	 * @param size 页容量
+	 * @param page  页码
+	 * @param size  页容量
 	 * @return Result
 	 */
 	@RequestMapping(value = "/hotlist/{label}/{page}/{size}", method = RequestMethod.GET)
@@ -149,8 +162,8 @@ public class ProblemController {
 
 	/**
 	 * @param label 标签 id
-	 * @param page 页码
-	 * @param size 页容量
+	 * @param page  页码
+	 * @param size  页容量
 	 * @return Result
 	 */
 	@RequestMapping(value = "/waitlist/{label}/{page}/{size}", method = RequestMethod.GET)
@@ -159,15 +172,13 @@ public class ProblemController {
 		return new Result(StatusCode.OK, true, "", new PageResult<Problem>(problems.getTotalElements(), problems.getContent()));
 	}
 
-
-
-
-
-
-
-
-
-
-
-
+	/**
+	 * eureka 调用测试
+	 * @param labelId
+	 * @return
+	 */
+	@RequestMapping(value = "/label/{labelId}", method = RequestMethod.GET)
+	public Result findByLabelId(@PathVariable String labelId) {
+		return baseEurekaClient.findById(labelId);
+	}
 }

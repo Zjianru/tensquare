@@ -11,3 +11,12 @@ spring:
   jpa:
     show-sql: true
     database: mysql
+jwt:
+  config:
+    key: tensquare_$$##123321123123##$$
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:6868/eureka/
+  instance:
+    prefer-ip-address: true
