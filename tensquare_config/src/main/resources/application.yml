@@ -1,0 +1,11 @@
+server:
+  port: 12000
+spring:
+  application:
+    name: tensquare-config
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/Zjianru/tensquare_config.git
+      label: master

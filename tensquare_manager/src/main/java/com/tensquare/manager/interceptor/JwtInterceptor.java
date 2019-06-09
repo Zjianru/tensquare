@@ -1,4 +1,4 @@
-package com.tensquare.user.interceptor;
+package com.tensquare.manager.interceptor;
 
 import entity.TokenCode;
 import io.jsonwebtoken.Claims;

@@ -144,7 +144,7 @@ public class IdWorker {
 	 * 获取 MAX_WORKER_ID
 	 * </p>
 	 */
-	protected static long getMaxWorkerId(long datacenterId, long maxWorkerId) {
+	private static long getMaxWorkerId(long datacenterId, long maxWorkerId) {
 		StringBuffer mpid = new StringBuffer();
 		mpid.append(datacenterId);
 		String name = ManagementFactory.getRuntimeMXBean().getName();
@@ -165,7 +165,7 @@ public class IdWorker {
 	 * 数据标识id部分
 	 * </p>
 	 */
-	protected static long getDatacenterId(long maxDatacenterId) {
+	private static long getDatacenterId(long maxDatacenterId) {
 		long id = 0L;
 		try {
 			InetAddress ip = InetAddress.getLocalHost();
@@ -176,7 +176,7 @@ public class IdWorker {
 				byte[] mac = network.getHardwareAddress();
 				id = ((0x000000FF & (long) mac[mac.length - 1])
 						| (0x0000FF00 & (((long) mac[mac.length - 2]) << 8))) >> 6;
-				id = id % (maxDatacenterId + 1);
+				id = id % (IdWorker.MAX_DATACENTER_ID + 1);
 			}
 		} catch (Exception e) {
 			System.out.println(" getDatacenterId: " + e.getMessage());

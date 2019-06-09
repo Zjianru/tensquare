@@ -15,4 +15,5 @@ public class TokenCode {
 	public static final String ROLE_USER = "user";
 	public static final String CLAIMS_ROLE_ADMIN = "claims_admin";
 	public static final String CLAIMS_ROLE_USER = "claims_user";
+	public static final String REQUEST_HEADER = "Authorization";
 }

@@ -1,5 +1,6 @@
 package util;
 
+import entity.TokenCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -42,9 +43,9 @@ public class JwtUtil {
 	/**
 	 * 生成JWT
 	 *
-	 * @param id
-	 * @param subject
-	 * @return
+	 * @param id id
+	 * @param subject name
+	 * @return String jwt
 	 */
 	public String createJWT(String id, String subject, String roles) {
 		long nowMillis = System.currentTimeMillis();
@@ -52,19 +53,25 @@ public class JwtUtil {
 		JwtBuilder builder = Jwts.builder().setId(id)
 				.setSubject(subject)
 				.setIssuedAt(now)
-				.signWith(SignatureAlgorithm.HS256, key).claim("roles", roles);
+				.signWith(SignatureAlgorithm.HS256, key).claim(TokenCode.ROLES, roles);
 		if (ttl > 0) {
 			builder.setExpiration( new Date( nowMillis + ttl));
 		}
+		System.out.println("TOKEN -------- "+builder.compact());
 		return builder.compact();
 	}
 
 	/**
 	 * 解析JWT
-	 * @param jwtStr
-	 * @return
+	 * @param jwtStr jwt
+	 * @return Claims
 	 */
 	public Claims parseJWT(String jwtStr){
+		System.out.println("解析后  "+Jwts.parser()
+				.setSigningKey(key)
+				.parseClaimsJws(jwtStr)
+				.getBody());
+
 		return  Jwts.parser()
 				.setSigningKey(key)
 				.parseClaimsJws(jwtStr)

@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import entity.TokenCode;
 import io.jsonwebtoken.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -123,7 +124,7 @@ public class AdminController {
 			return new Result(StatusCode.LOGINERROR,false,"登陆失败");
 		}
 		//todo 角色表和用户表的联动，临时写死角色
-		String jwtToken = jwtUtil.createJWT(login.getId(), login.getLoginname(), "admin");
+		String jwtToken = jwtUtil.createJWT(login.getId(), login.getLoginname(), TokenCode.ROLE_ADMIN);
 		Map<String,Object> map = new HashMap<>();
 		map.put("token",jwtToken);
 		map.put("role","admin");
