@@ -3,5 +3,5 @@ spring:
     config:
       name: eureka
       profile: dev
-      label: master
-      uri: http://127.0.0.1:12000
+             label: master
+             uri: http://127.0.0.1:12000
