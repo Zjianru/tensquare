@@ -1,6 +1,6 @@
-## Ten Square 十立方社交平台
+## Ten Square 十次方社交平台
 
-十立方社交平台 采用主力的微服务架构，使用spring全家桶 `SpringBoot + SpringCloud + SpringData` 进行开发
+十次方社交平台 采用主力的微服务架构，使用spring全家桶 `SpringBoot + SpringCloud + SpringData` 进行开发
 前端技术采用`Vue.js `
 
 系统整体分为三大部分：
