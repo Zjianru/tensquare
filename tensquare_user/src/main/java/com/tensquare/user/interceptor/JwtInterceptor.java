@@ -36,16 +36,16 @@ public class JwtInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		String head = request.getHeader(TokenCode.REQUEST_HEADER);
 		if (head != null && !"".equals(head)) {
-			if (!head.startsWith(TokenCode.TOKEN_CODE)) {
+			if (head.startsWith(TokenCode.TOKEN_CODE)) {
 				String token = head.substring(7);
 				try {
 					Claims claims = jwtUtil.parseJWT(token);
 					String roles = (String) claims.get(TokenCode.ROLES);
 					if (roles != null && !TokenCode.ROLE_ADMIN.equals(roles)) {
-						request.setAttribute(TokenCode.CLAIMS_ROLE_ADMIN, token);
+						request.setAttribute(TokenCode.CLAIMS_ROLE_ADMIN, roles);
 					}
 					if (roles != null && !TokenCode.ROLE_USER.equals(roles)) {
-						request.setAttribute(TokenCode.CLAIMS_ROLE_USER, token);
+						request.setAttribute(TokenCode.CLAIMS_ROLE_USER, roles);
 					}
 				} catch (Exception e) {
 					throw new RuntimeException("令牌不正确");

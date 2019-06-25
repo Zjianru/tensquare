@@ -10,6 +10,7 @@ import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 
 import entity.TokenCode;
+import io.jsonwebtoken.Claims;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,7 +130,7 @@ public class UserService {
 	 */
 	public void deleteById(String id) {
 		String token = (String) httpServletRequest.getAttribute(TokenCode.CLAIMS_ROLE_ADMIN);
-		if (token == null || "".equals(token)){
+		if (!TokenCode.ROLE_ADMIN.equals(token)){
 			throw new RuntimeException("权限不足");
 		}
 		userDao.deleteById(id);
